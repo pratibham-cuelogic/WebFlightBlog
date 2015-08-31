@@ -15,11 +15,12 @@
     public static function all() {
       $list = [];
       $db = Db::getInstance();
-      $req = $db->query('SELECT * FROM blogPosts');
+      $req = $db->query('SELECT * FROM blogPosts b JOIN users u ON ( u.id = b.postedBy ) WHERE b.isPublish = 1');
 
       // we create a list of Post objects from the database results
       foreach($req->fetchAll() as $post) {
-        $list[] = new Post($post['id'], $post['postedBy'], $post['content']);
+        $postedBy = $post['firstName'] . $post['lastName'];
+        $list[] = new Post($post['id'], $postedBy, $post['content'], $post['postedOn'] );
       }
 
       return $list;
@@ -29,12 +30,15 @@
       $db = Db::getInstance();
       // we make sure $id is an integer
       $id = intval($id);
-      $req = $db->prepare('SELECT * FROM blogPosts WHERE id = :id');
+      $req = $db->prepare('SELECT * FROM blogPosts b join users u on ( b.postedBy = u.id ) WHERE b.id = :id');
       // the query was prepared, now we replace :id with our actual $id value
       $req->execute(array('id' => $id));
       $post = $req->fetch();
 
-      return new Post($post['id'], $post['postedBy'], $post['content']);
+      $postedBy = $post['firstName'] . $post['lastName'];
+      $postedOn = $post['postedOn'];
+
+      return new Post($post['id'], $postedBy, $post['content'], $post['postedOn']);
     }
   }
 ?>

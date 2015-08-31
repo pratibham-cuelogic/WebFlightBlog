@@ -4,10 +4,11 @@
   </head>
   <body>
     <header>
-      <a href='/WebFlight'>Home</a>
+      <a href='/php_mvc_blog'>Home</a>
+      <a href='?controller=posts&action=index'>Posts</a>
     </header>
 
-    <?php require_once('routes.php'); ?>
+    <?php require_once('route.php'); ?>
 
     <footer>
       Copyright

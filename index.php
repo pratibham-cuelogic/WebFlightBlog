@@ -1,8 +1,5 @@
 <?php
   require_once('connection.php');
-  echo'here';
-  print_r($_GET['controller']);
-  exit;
 
    if (isset($_GET['controller']) && isset($_GET['action'])) {
     $controller = $_GET['controller'];
